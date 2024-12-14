@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    kotlin("kapt")
 }
 
 android {
@@ -90,4 +91,18 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.glide)
     annotationProcessor(libs.compiler)
+    //paging
+    implementation (libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.common)
+    //room
+    implementation (libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    //kapt ("androidx.room:room-compiler:2.5.0")
+    //coroutines
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.kotlinx.coroutines.core)
+    //dagger
+    implementation (libs.androidx.hilt.lifecycle.viewmodel)
+    implementation (libs.hilt.android)
+  //  kapt("com.google.dagger:hilt-compiler:2.44.2")
 }
