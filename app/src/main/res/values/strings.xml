@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MyStoryAppSubmissionAwal</string>
+    <string name="title_activity_bottom_navigation_view">BottomNavigationView</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="photo">Photo</string>
+    <string name="camera">Camera</string>
+    <string name="enter_description">Enter description</string>
+    <string name="add_story">Add Story</string>
+    <string name="don_t_have_an_account_register_here">Don\'t have an account? Register here.</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="already_have_an_account_login_here">Already have an account? Login here.</string>
+    <string name="register">Register</string>
+    <string name="full_name">Full Name</string>
+    <string name="user_name">User Name</string>
+    <string name="logout">Logout</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="maps">Maps</string>
+</resources>
