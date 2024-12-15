@@ -18,6 +18,7 @@ activityCompose = "1.9.3"
 composeBom = "2024.04.01"
 loggingInterceptor = "5.0.0-alpha.2"
 pagingCommon = "3.1.1"
+pagingRuntime = "3.1.0"
 retrofit = "2.9.0"
 appcompat = "1.7.0"
 recyclerview = "1.3.2"
@@ -38,6 +39,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-hilt-lifecycle-viewmodel = { module = "androidx.hilt:hilt-lifecycle-viewmodel", version.ref = "hiltLifecycleViewmodel" }
 androidx-paging-common = { module = "androidx.paging:paging-common", version.ref = "pagingCommon" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingCommon" }
+androidx-paging-runtime-v310 = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }

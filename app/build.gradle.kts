@@ -45,6 +45,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+        freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn") + freeCompilerArgs
     }
     buildFeatures {
         compose = true
@@ -93,6 +94,7 @@ dependencies {
     annotationProcessor(libs.compiler)
     //paging
     implementation (libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.runtime.v310)
     implementation (libs.androidx.paging.common)
     //room
     implementation (libs.androidx.room.runtime)
