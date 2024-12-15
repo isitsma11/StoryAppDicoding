@@ -79,18 +79,13 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.activity)
     implementation(libs.play.services.maps)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.coil.compose)
     implementation(libs.glide)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.core.testing)
     annotationProcessor(libs.compiler)
     //paging
     implementation (libs.androidx.paging.runtime)
@@ -107,4 +102,35 @@ dependencies {
     implementation (libs.androidx.hilt.lifecycle.viewmodel)
     implementation (libs.hilt.android)
   //  kapt("com.google.dagger:hilt-compiler:2.44.2")
+
+    //testing
+    // JUnit for unit testing
+    testImplementation(libs.junit)
+
+    // MockK for mocking dependencies
+    testImplementation(libs.mockk)
+
+    // Paging 3 testing
+    testImplementation(libs.androidx.paging.common.ktx)
+    testImplementation(libs.androidx.paging.runtime)
+
+    // Coroutine testing utilities
+    testImplementation(libs.kotlinx.coroutines.test)
+
+    // LiveData testing utilities
+    testImplementation(libs.androidx.core.testing)
+
+    // Retrofit mock (if you're using Retrofit)
+    testImplementation(libs.retrofit)
+    testImplementation(libs.converter.gson)
+    testImplementation(libs.mockwebserver)
+
+
+    // Mockito (Optional, can be used instead of MockK)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    // Dagger Hilt for testing if used in the project
+    testImplementation(libs.androidx.hilt.lifecycle.viewmodel)
+    testImplementation(libs.hilt.android.testing)
+    kaptTest(libs.hilt.compiler)
 }
