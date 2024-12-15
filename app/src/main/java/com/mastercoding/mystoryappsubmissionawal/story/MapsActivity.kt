@@ -9,6 +9,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.mastercoding.mystoryappsubmissionawal.R
 import com.mastercoding.mystoryappsubmissionawal.api.ApiService
@@ -37,7 +38,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        setMapStyle()
+
         fetchStoriesWithLocation()
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success = mMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style)
+            )
+            if (!success) {
+                Log.e("MapsActivity", "Failed to apply map style.")
+            }
+        } catch (e: Exception) {
+            Log.e("MapsActivity", "Error loading map style: ${e.message}")
+        }
     }
 
     private fun fetchStoriesWithLocation() {

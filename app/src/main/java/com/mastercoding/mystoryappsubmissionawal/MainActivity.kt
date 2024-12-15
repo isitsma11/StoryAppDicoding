@@ -1,5 +1,7 @@
 package com.mastercoding.mystoryappsubmissionawal
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -24,7 +26,6 @@ import com.mastercoding.mystoryappsubmissionawal.story.adapter.StoryListAdapter
 import com.mastercoding.mystoryappsubmissionawal.utils.PrefManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 import androidx.activity.result.contract.ActivityResultContracts
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     private val addStoryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-
             observeStories()
         }
     }
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         val fabAddStory: FloatingActionButton = findViewById(R.id.fab_add_story)
         fabAddStory.setOnClickListener {
-            // Launch AddStoryActivity
+            playFabAnimation()
             val intent = Intent(this, AddStoryActivity::class.java)
             addStoryLauncher.launch(intent)
         }
@@ -112,6 +112,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun playFabAnimation() {
+        val fab = findViewById<FloatingActionButton>(R.id.fab_add_story)
+
+        val scaleX = ObjectAnimator.ofFloat(fab, "scaleX", 1f, 1.5f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(fab, "scaleY", 1f, 1.5f, 1f)
+        val alpha = ObjectAnimator.ofFloat(fab, "alpha", 1f, 0.7f, 1f)
+
+        val animatorSet = AnimatorSet().apply {
+            duration = 700
+            playTogether(scaleX, scaleY, alpha)
+        }
+
+        animatorSet.start()
+    }
+
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -135,4 +150,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-

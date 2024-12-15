@@ -1,5 +1,7 @@
 package com.mastercoding.mystoryappsubmissionawal.story
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -15,7 +17,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mastercoding.mystoryappsubmissionawal.R
 import com.mastercoding.mystoryappsubmissionawal.api.ApiService
 import com.mastercoding.mystoryappsubmissionawal.auth.LoginActivity
-import com.mastercoding.mystoryappsubmissionawal.model.Story
 import com.mastercoding.mystoryappsubmissionawal.story.adapter.StoryListAdapter
 import com.mastercoding.mystoryappsubmissionawal.story.adapter.LoadingStateAdapter
 import com.mastercoding.mystoryappsubmissionawal.utils.PrefManager
@@ -41,6 +42,7 @@ class StoryListActivity : AppCompatActivity() {
 
         val fabAddStory: FloatingActionButton = findViewById(R.id.fab_add_story)
         fabAddStory.setOnClickListener {
+            playFabAnimation()
             val intent = Intent(this, AddStoryActivity::class.java)
             startActivity(intent)
         }
@@ -86,6 +88,21 @@ class StoryListActivity : AppCompatActivity() {
         }
     }
 
+    private fun playFabAnimation() {
+        val fab = findViewById<FloatingActionButton>(R.id.fab_add_story)
+
+        val scaleX = ObjectAnimator.ofFloat(fab, "scaleX", 1f, 1.5f, 1f)
+        val scaleY = ObjectAnimator.ofFloat(fab, "scaleY", 1f, 1.5f, 1f)
+        val alpha = ObjectAnimator.ofFloat(fab, "alpha", 1f, 0.7f, 1f)
+
+        val animatorSet = AnimatorSet().apply {
+            duration = 700
+            playTogether(scaleX, scaleY, alpha)
+        }
+
+        animatorSet.start()
+    }
+
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -108,5 +125,4 @@ class StoryListActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }
