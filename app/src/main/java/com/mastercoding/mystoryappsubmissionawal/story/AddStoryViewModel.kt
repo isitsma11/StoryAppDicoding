@@ -28,25 +28,22 @@ class AddStoryViewModel(application: Application) : AndroidViewModel(application
     val storyRefreshLiveData: LiveData<Boolean> = _storyRefreshLiveData
 
     fun uploadStory(photoFile: File?, description: String) {
-        // Check if photoFile is null
+
         if (photoFile == null) {
             Toast.makeText(getApplication(), "Please add a photo", Toast.LENGTH_SHORT).show()
-            return // Stay on the AddStory screen
+            return
         }
 
-        // Check if the file is a valid image
         if (!photoFile.exists() || !photoFile.canRead()) {
             Toast.makeText(getApplication(), "Invalid image file", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // Check if description is empty
         if (description.isEmpty()) {
             Toast.makeText(getApplication(), "Description cannot be empty", Toast.LENGTH_SHORT).show()
-            return // Stay on the AddStory screen
+            return
         }
 
-        // Compress and resize the image file
         val compressedFile = try {
             compressAndResizeImage(photoFile)
         } catch (e: Exception) {
@@ -57,12 +54,10 @@ class AddStoryViewModel(application: Application) : AndroidViewModel(application
 
         val token = "Bearer ${prefManager.getToken()}"
 
-        // Prepare the request body for the API call
         val descriptionRequestBody = description.toRequestBody("text/plain".toMediaTypeOrNull())
         val photoRequestBody = compressedFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val photoMultipart = MultipartBody.Part.createFormData("photo", compressedFile.name, photoRequestBody)
 
-        // Make the API call to upload the story
         ApiService.create().addNewStory(token, descriptionRequestBody, photoMultipart, null, null)
             .enqueue(object : Callback<AddStoryResponse> {
                 override fun onResponse(call: Call<AddStoryResponse>, response: Response<AddStoryResponse>) {

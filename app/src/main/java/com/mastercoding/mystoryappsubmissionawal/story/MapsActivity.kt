@@ -3,6 +3,7 @@ package com.mastercoding.mystoryappsubmissionawal.story
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -11,11 +12,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.mastercoding.mystoryappsubmissionawal.R
 import com.mastercoding.mystoryappsubmissionawal.api.ApiService
-import com.mastercoding.mystoryappsubmissionawal.model.StoryResponse
 import com.mastercoding.mystoryappsubmissionawal.utils.PrefManager
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.launch
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -44,41 +42,36 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun fetchStoriesWithLocation() {
         val token = "Bearer ${prefManager.getToken()}"
+        val apiService = ApiService.create()
 
-        ApiService.create().getAllStories(token, null, null, 1).enqueue(object : Callback<StoryResponse> {
-            override fun onResponse(call: Call<StoryResponse>, response: Response<StoryResponse>) {
-                if (response.isSuccessful) {
+        lifecycleScope.launch {
+            try {
+                val response = apiService.getStoriesWithLocation(token)
+                val storiesWithLocation = response.listStory.filter { it.lat != null && it.lon != null }
 
-                    response.body()?.listStory?.forEach { story ->
+                if (storiesWithLocation.isNotEmpty()) {
 
-                        story.lat?.let { lat ->
-                            story.lon?.let { lon ->
-                                val latLng = LatLng(lat.toDouble(), lon.toDouble())
-                                mMap.addMarker(
-                                    MarkerOptions()
-                                        .position(latLng)
-                                        .title(story.name)
-                                        .snippet(story.description)
-                                )
-                            }
-                        }
+                    storiesWithLocation.forEach { story ->
+                        val latLng = LatLng(story.lat!!.toDouble(), story.lon!!.toDouble())
+                        mMap.addMarker(
+                            MarkerOptions()
+                                .position(latLng)
+                                .title(story.name)
+                                .snippet(story.description)
+                        )
                     }
 
-                    if (response.body()?.listStory?.isNotEmpty() == true) {
-                        val firstStory = response.body()?.listStory?.get(0)
-                        firstStory?.let {
-                            val firstLatLng = LatLng(it.lat!!.toDouble(), it.lon!!.toDouble())
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 10f))
-                        }
-                    }
+                    val firstStoryLatLng = LatLng(
+                        storiesWithLocation.first().lat!!.toDouble(),
+                        storiesWithLocation.first().lon!!.toDouble()
+                    )
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstStoryLatLng, 10f))
                 } else {
-                    Log.e("MapsActivity", "Failed to fetch stories: ${response.code()}")
+                    Log.e("MapsActivity", "No stories with locations found.")
                 }
+            } catch (e: Exception) {
+                Log.e("MapsActivity", "Failed to fetch stories with location: ${e.message}")
             }
-
-            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
-                Log.e("MapsActivity", "API call failed: ${t.message}")
-            }
-        })
+        }
     }
 }
